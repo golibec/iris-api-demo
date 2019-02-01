@@ -6,8 +6,8 @@ import (
 	"github.com/kataras/iris/middleware/recover"
 )
 
-var public_url = []string{
-	"/debug",
+var public_url = map[string]string{
+	"/debug":"1",
 }
 
 
@@ -24,8 +24,20 @@ func main() {
 }
 
 func handler(ctx iris.Context){
-	if public_url[ctx.Path()] == nil {
+	checkSign(ctx)
 
-	}
-	ctx.Writef("Hello from method: %s and path: %s", ctx.Method(), ctx.Path())
+	//if _, ok := public_url[ctx.Path()];ok {
+	//	fmt.Println(ok)
+	//}else{
+	//	checkSign(ctx)
+	//}
+
+	ctx.Writef("Hello from method: %s and path: %s \n", ctx.Method(), ctx.Path())
+}
+
+func checkSign(ctx iris.Context){
+	ctx.Writef("Host: %s \n", ctx.Host())
+	ctx.Writef("RemoteAddr: %s \n", ctx.RemoteAddr())
+	ctx.Writef("GetHeader: %s \n", ctx.GetHeader("sign"))
+
 }
