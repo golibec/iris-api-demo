@@ -7,7 +7,7 @@ import (
 )
 
 var public_url = map[string]string{
-	"/debug":"1",
+	"/debug":"GET",
 }
 
 
@@ -36,6 +36,18 @@ func handler(ctx iris.Context){
 }
 
 func checkSign(ctx iris.Context){
+
+	if method,ok := public_url[ctx.Path()];ok {
+		if method == ctx.Method() {
+			ctx.Writef("Right method: %s", method)
+		}else{
+			ctx.Writef("Wrond method: %s", method)
+		}
+	}else{
+
+	}
+
+	ctx.Writef("Method: %s \n", ctx.Method())
 	ctx.Writef("Host: %s \n", ctx.Host())
 	ctx.Writef("RemoteAddr: %s \n", ctx.RemoteAddr())
 	ctx.Writef("GetHeader: %s \n", ctx.GetHeader("sign"))
